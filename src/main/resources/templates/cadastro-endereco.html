@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{cadastro-endereco.title}">Cadastro de Endereço - OdontoPrev</title>
+    <link rel="stylesheet" href="/css/cadastro-endereco.css">
+    <script src="/js/scripts.js"></script>
+</head>
+<body>
+
+    <div class="address-container">
+        <div class="address-logo">
+            <img src="/images/logo.png" alt="OdontoPrev">
+        </div>
+
+        <h2 th:text="#{cadastro-endereco.title}">Cadastro de Endereço</h2>
+
+        <div th:replace="~{fragments :: langSelector}"></div>
+
+        <form action="#" th:action="@{/address}" method="post" class="address-form">
+            <label for="street" th:text="#{cadastro-endereco.label.street}">Rua:</label>
+            <input type="text" id="street" name="street" th:placeholder="#{cadastro-endereco.placeholder.street}" required class="address-input">
+
+            <label for="num" th:text="#{cadastro-endereco.label.num}">Número:</label>
+            <input type="text" id="num" name="num" th:placeholder="#{cadastro-endereco.placeholder.num}" required class="address-input">
+
+            <label for="city" th:text="#{cadastro-endereco.label.city}">Cidade:</label>
+            <input type="text" id="city" name="city" th:placeholder="#{cadastro-endereco.placeholder.city}" required class="address-input">
+
+            <label for="state" th:text="#{cadastro-endereco.label.state}">Estado:</label>
+            <input type="text" id="state" name="state" th:placeholder="#{cadastro-endereco.placeholder.state}" required class="address-input">
+
+            <label for="zipCode" th:text="#{cadastro-endereco.label.zipCode}">CEP:</label>
+            <input type="text" id="zipCode" name="zipCode" th:placeholder="#{cadastro-endereco.placeholder.zipCode}" required class="address-input">
+
+            <button type="submit" class="address-submit-button" th:text="#{cadastro-endereco.button.submit}">Cadastrar</button>
+        </form>
+
+        <form action="#" th:action="@{/manageAddresses}" method="post" class="address-back-form">
+            <p class="address-back-text" th:text="#{cadastro-endereco.text.backToManage}">Voltar para Gerenciar Endereços</p>
+            <button class="address-back-button" type="submit" th:text="#{cadastro-endereco.button.back}">Voltar</button>
+        </form>
+    </div>
+
+</body>
+</html>

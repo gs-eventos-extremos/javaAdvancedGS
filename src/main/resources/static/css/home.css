@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000000;
+}
+
+.container {
+    height: 70%;
+    text-align: center;
+    background-color: #000000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+}
+
+.logo img {
+    width: 260px;
+    margin-bottom: 10px;
+}
+
+.logo h1 {
+    color: #1DB954;
+    margin: 0;
+}
+
+.welcome-text {
+    font-size: 18px;
+    margin: 20px 0;
+    color: white
+}
+
+.role-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.role-button {
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    background-color: #1DB954;
+    color: #000000;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.role-button:focus {
+    outline: 2px solid #0055aa;
+    outline-offset: 2px;
+}
+
+.role-button:hover {
+    background-color: #0055aa;
+}
+
+.role-button img {
+    width: 70px;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #1DB954;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}

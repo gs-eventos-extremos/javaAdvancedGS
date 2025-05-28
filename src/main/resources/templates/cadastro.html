@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - OdontoPrev</title>
+    <link rel="stylesheet" href="css/cadastro.css">
+    <script src="/js/scripts.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img src="images/logo.png" alt="OdontoPrev">
+        </div>
+        <h2 th:text="#{cadastro.title}">Register, Attendant:</h2>
+
+        <div th:replace="~{fragments :: langSelector}"></div>
+
+        <form th:action="@{/auth/signup}" method="post">
+            <label for="name" th:text="#{cadastro.label.name}">Name:</label>
+            <input type="text" id="name" name="name" th:placeholder="#{cadastro.placeholder.name}" required>
+
+            <label for="email" th:text="#{cadastro.label.email}">Email:</label>
+            <input type="email" id="email" name="email" th:placeholder="#{cadastro.placeholder.email}" required>
+
+            <label for="password" th:text="#{cadastro.label.password}">Password:</label>
+            <div class="password-container">
+                <input type="password" id="password" name="password" th:placeholder="#{cadastro.placeholder.password}" required>
+            </div>
+
+            <input type="hidden" name="role" value="ADMIN">
+
+            <button type="submit" class="register-button" th:text="#{cadastro.button.register}">Register</button>
+        </form>
+
+        <form th:action="@{login}" method="post">
+            <p class="login-text" th:text="#{cadastro.text.already-registered}">Already registered?</p>
+            <button class="login-button" type="submit" th:text="#{cadastro.button.login}">Login</button>
+        </form>
+    </div>
+</body>
+</html>

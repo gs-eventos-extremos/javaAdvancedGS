@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{gerir-enderecos.title}">Gerir Endereços - OdontoPrev</title>
+    <link rel="stylesheet" href="/css/manageAddresses.css">
+    <script src="/js/scripts.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img src="/images/logo.png" alt="OdontoPrev">
+        </div>
+
+        <h2 th:text="#{gerir-enderecos.header}">Gerir endereços</h2>
+
+        <div th:replace="~{fragments :: langSelector}"></div>
+
+        <div class="endereco-container">
+            <form action="#" th:action="@{/cadastro-endereco}" method="post" class="add-address-form">
+                <button type="submit" class="add-button">
+                    <img src="/images/add-icon.png" alt="Adicionar Endereço">
+                    <span th:text="#{gerir-enderecos.button.add}">Adicionar Endereço</span>
+                </button>
+            </form>
+
+            <div id="endereco-list"></div>
+        </div>
+
+        <form action="#" th:action="@{/servicos}" method="post" class="back-form">
+            <button class="back-button" type="submit" th:text="#{gerir-enderecos.button.back}">Voltar</button>
+        </form>
+    </div>
+
+   <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/address')
+                .then(response => response.json())
+                .then(data => {
+                    const enderecoList = document.getElementById('endereco-list');
+
+                    data.forEach(address => {
+                        const enderecoItem = document.createElement('div');
+                        enderecoItem.className = 'endereco-item';
+
+                        const enderecoInfo = document.createElement('div');
+                        enderecoInfo.className = 'endereco-info';
+                        enderecoInfo.innerHTML = `<span>${address.street}</span>`;
+                        enderecoInfo.dataset.id = address.id;
+
+                        const enderecoActions = document.createElement('div');
+                        enderecoActions.className = 'endereco-actions';
+
+                        const editButton = document.createElement('button');
+                        editButton.className = 'edit-button';
+                        editButton.innerHTML = '<img src="/images/edit-icon.png" alt="Editar">';
+
+                        const deleteButton = document.createElement('button');
+                        deleteButton.className = 'delete-button';
+                        deleteButton.innerHTML = '<img src="/images/delete-icon.png" alt="Excluir">';
+                        deleteButton.dataset.id = address.id;
+
+                        enderecoActions.appendChild(editButton);
+                        enderecoActions.appendChild(deleteButton);
+
+                        enderecoItem.appendChild(enderecoInfo);
+                        enderecoItem.appendChild(enderecoActions);
+
+                        enderecoList.appendChild(enderecoItem);
+                    });
+
+                    const deleteButtons = document.querySelectorAll('.delete-button');
+                    deleteButtons.forEach(button => {
+                        button.addEventListener('click', function () {
+                            const id = this.dataset.id; // Obtém o ID do endereço
+                            if (confirm('Tem certeza que deseja excluir este endereço?')) {
+                                // Faz a requisição DELETE para /address/{id}
+                                fetch(`/address/${id}`, {
+                                    method: 'DELETE'
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        alert('Endereço excluído com sucesso!');
+                                        window.location.reload(); // Recarrega a página para exibir a lista atualizada
+                                    } else {
+                                        alert('Erro ao excluir o endereço. Certifique-se de que ele não está associado a nenhuma clinica.');
+                                    }
+                                })
+                                .catch(error => console.error('Erro:', error));
+                            }
+                        });
+                    });
+
+                    const editButtons = document.querySelectorAll('.edit-button');
+                    editButtons.forEach(button => {
+                        button.addEventListener('click', function () {
+                            const enderecoInfo = this.closest('.endereco-item').querySelector('.endereco-info');
+                            const id = enderecoInfo.dataset.id; // Obtém o ID do endereço
+                            const currentStreet = enderecoInfo.querySelector('span').textContent; // Valor atual da rua
+
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.value = currentStreet;
+                            input.style.width = '80%';
+                            input.style.padding = '5px';
+                            input.style.border = '1px solid #1DB954';
+                            input.style.borderRadius = '4px';
+
+                            enderecoInfo.innerHTML = '';
+                            enderecoInfo.appendChild(input);
+                            input.focus();
+
+                            input.addEventListener('blur', function () {
+                                const newStreet = input.value.trim(); // Novo valor da rua
+
+                                if (newStreet !== currentStreet) {
+                                    fetch(`/address/${id}?newStreet=${encodeURIComponent(newStreet)}`, {
+                                        method: 'PUT'
+                                    })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            enderecoInfo.innerHTML = `<span>${newStreet}</span>`;
+                                        } else {
+                                            alert('Erro ao atualizar o endereço.');
+                                        }
+                                    })
+                                    .catch(error => console.error('Erro:', error));
+                                } else {
+                                    enderecoInfo.innerHTML = `<span>${currentStreet}</span>`;
+                                }
+                            });
+
+                            input.addEventListener('keypress', function (event) {
+                                if (event.key === 'Enter') {
+                                    input.blur(); // Dispara o evento 'blur' para salvar
+                                }
+                            });
+                        });
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar endereços:', error));
+        });
+    </script>
+
+</body>
+</html>

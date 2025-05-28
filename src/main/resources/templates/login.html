@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{login.title}">Login - OdontoPrev</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <script src="/js/scripts.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img src="/images/logo.png" alt="OdontoPrev">
+        </div>
+        <h2 th:text="#{login.header}">Login</h2>
+
+        <div th:replace="~{fragments :: langSelector}"></div>
+
+        <form action="#" th:action="@{/auth/login}" method="post">
+            <label for="email" th:text="#{login.label.email}">E-mail:</label>
+            <input type="email" id="email" name="email" th:placeholder="#{login.placeholder.email}" required>
+
+            <label for="password" th:text="#{login.label.password}">Senha:</label>
+            <div class="password-container">
+                <input type="password" id="password" name="password" th:placeholder="#{login.placeholder.password}" required>
+            </div>
+
+            <p class="forgot-password-text">
+                <a th:href="@{/forgotPassword}" th:text="#{login.text.forgot-password}">Esqueceu a senha?</a>
+            </p>
+
+            <button type="submit" class="login-button" th:text="#{login.button.submit}">Entrar</button>
+        </form>
+
+        <form action="#" th:action="@{home}" method="post">
+            <p class="register-text" th:text="#{login.text.no-account}">Não possui cadastro?</p>
+            <button class="register-button" type="submit" th:text="#{login.button.register}">Cadastre-se</button>
+        </form>
+    </div>
+
+</body>
+</html>
