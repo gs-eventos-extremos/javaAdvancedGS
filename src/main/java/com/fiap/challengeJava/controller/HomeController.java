@@ -113,6 +113,16 @@ public class HomeController {
         return new ModelAndView("cadastro");
     }
 
+    @GetMapping("/mapa")
+    public ModelAndView mapaRefresh(Model model) {
+        return new ModelAndView("mapa");
+    }
+
+    @PostMapping("/mapa")
+    public ModelAndView mapa(Model model) {
+        return new ModelAndView("mapa");
+    }
+
     @GetMapping("/cadastro-dentista")
     public ModelAndView cadastroDentistaRefresh(Model model) {
         return new ModelAndView("cadastro-dentista");

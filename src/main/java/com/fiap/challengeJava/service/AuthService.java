@@ -1,6 +1,8 @@
 package com.fiap.challengeJava.service;
 
+import com.fiap.challengeJava.domain.LoginLog;
 import com.fiap.challengeJava.domain.User;
+import com.fiap.challengeJava.dto.AddressDTO;
 import com.fiap.challengeJava.dto.EmailDTO;
 import com.fiap.challengeJava.dto.UserDTO;
 import com.fiap.challengeJava.dto.auth.LoginRequestDTO;
@@ -8,6 +10,7 @@ import com.fiap.challengeJava.dto.auth.LoginResponseDTO;
 import com.fiap.challengeJava.dto.auth.RegisterRequestDTO;
 import com.fiap.challengeJava.dto.auth.RegisterResponseDTO;
 import com.fiap.challengeJava.infra.security.TokenService;
+import com.fiap.challengeJava.repository.LoginLogRepository;
 import com.fiap.challengeJava.service.exceptions.InvalidCredentialsException;
 import com.fiap.challengeJava.service.exceptions.UserAlreadyExistsException;
 import com.fiap.challengeJava.service.models.UserService;
@@ -30,6 +33,8 @@ public class AuthService implements UserDetailsService {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private MessageSenderService emailService;
+    @Autowired
+    private LoginLogRepository loginLogRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -38,12 +43,38 @@ public class AuthService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public LoginResponseDTO login(LoginRequestDTO auth) {
-        User user = (User) this.loadUserByUsername(auth.getEmail());
-        if (passwordEncoder.matches(auth.getPassword(), user.getPassword())) {
-            String token = this.tokenService.generateToken(user);
-            return new LoginResponseDTO(user.getEmail(), token);
-        } else {
-            throw new InvalidCredentialsException("Senha incorreta!!");
+        try {
+            User user = (User) this.loadUserByUsername(auth.getEmail());
+            if (passwordEncoder.matches(auth.getPassword(), user.getPassword())) {
+                String token = this.tokenService.generateToken(user);
+
+                // Salvar log de login bem-sucedido
+                LoginLog log = new LoginLog(user.getEmail(), "SUCCESS");
+                loginLogRepository.save(log);
+
+                return new LoginResponseDTO(user.getEmail(), token);
+            } else {
+                // Salvar log de senha incorreta
+                LoginLog log = new LoginLog(auth.getEmail(), "FAILED");
+                loginLogRepository.save(log);
+
+                throw new InvalidCredentialsException("Senha incorreta!!");
+            }
+        } catch (UsernameNotFoundException e) {
+            // Salvar log de usuário não encontrado
+            LoginLog log = new LoginLog(auth.getEmail(), "FAILED");
+            loginLogRepository.save(log);
+
+            throw e; // Re-lança a exceção original
+        } catch (InvalidCredentialsException e) {
+            // A exceção de senha incorreta já foi tratada acima
+            throw e;
+        } catch (Exception e) {
+            // Salvar log de erro inesperado
+            LoginLog log = new LoginLog(auth.getEmail(), "ERROR");
+            loginLogRepository.save(log);
+
+            throw e;
         }
     }
 
@@ -58,7 +89,9 @@ public class AuthService implements UserDetailsService {
 
         UserDTO user = new UserDTO(auth.getName(), auth.getEmail(), encryptedPassword, auth.getRole());
 
-        user = this.userService.insert(user);
+        AddressDTO addressDTO = new AddressDTO(auth.getStreet(), auth.getNum(), auth.getCity(), auth.getState(), auth.getZipCode());
+
+        user = this.userService.insert(user, addressDTO);
         return new RegisterResponseDTO(user.getEmail(), user.getName());
     }
 

@@ -1,6 +1,8 @@
 package com.fiap.challengeJava.service.models;
 
+import com.fiap.challengeJava.domain.Address;
 import com.fiap.challengeJava.domain.User;
+import com.fiap.challengeJava.dto.AddressDTO;
 import com.fiap.challengeJava.dto.UserDTO;
 import com.fiap.challengeJava.enums.UserRole;
 import com.fiap.challengeJava.repository.UserRepository;
@@ -20,10 +22,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AddressService addressService;
+
     @Transactional
-    public UserDTO insert(UserDTO userDTO) {
+    public UserDTO insert(UserDTO userDTO, AddressDTO addressDTO) {
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
+        Address address = new Address(addressService.insert(addressDTO));
+        user.setAddress(address);
         user.setCreatedAt(LocalDate.now());
         user = userRepository.save(user);
         return new UserDTO(user);

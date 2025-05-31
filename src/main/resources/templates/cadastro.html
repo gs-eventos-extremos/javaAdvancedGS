@@ -31,6 +31,21 @@
 
             <input type="hidden" name="role" value="ADMIN">
 
+            <label for="street" th:text="#{cadastro-endereco.label.street}">Rua:</label>
+            <input type="text" id="street" name="street" th:placeholder="#{cadastro-endereco.placeholder.street}" required class="address-input">
+
+            <label for="num" th:text="#{cadastro-endereco.label.num}">Número:</label>
+            <input type="text" id="num" name="num" th:placeholder="#{cadastro-endereco.placeholder.num}" required class="address-input">
+
+            <label for="city" th:text="#{cadastro-endereco.label.city}">Cidade:</label>
+            <input type="text" id="city" name="city" th:placeholder="#{cadastro-endereco.placeholder.city}" required class="address-input">
+
+            <label for="state" th:text="#{cadastro-endereco.label.state}">Estado:</label>
+            <input type="text" id="state" name="state" th:placeholder="#{cadastro-endereco.placeholder.state}" required class="address-input">
+
+            <label for="zipCode" th:text="#{cadastro-endereco.label.zipCode}">CEP:</label>
+            <input type="text" id="zipCode" name="zipCode" th:placeholder="#{cadastro-endereco.placeholder.zipCode}" required class="address-input">
+
             <button type="submit" class="register-button" th:text="#{cadastro.button.register}">Register</button>
         </form>
 

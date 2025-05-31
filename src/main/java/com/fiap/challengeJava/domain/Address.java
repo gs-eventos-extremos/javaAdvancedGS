@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_address")
+@Table(name = "tb_address_gs")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,9 @@ public class Address {
     private String city;
     private String state;
     private String zipCode;
+
+    @OneToOne(mappedBy = "address")
+    private User user;
 
     public Address(AddressDTO addressDTO) {
         this.id = addressDTO.getId();

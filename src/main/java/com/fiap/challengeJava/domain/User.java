@@ -20,12 +20,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_user_gs")
 public class User extends People implements UserDetails {
 
     @Column(unique = true)
     private String email;
     private String password;
+
+    @OneToOne
+    private Address address;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;

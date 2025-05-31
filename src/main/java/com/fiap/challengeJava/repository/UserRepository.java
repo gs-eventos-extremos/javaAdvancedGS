@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query(nativeQuery = true, value = """
-            SELECT * FROM tb_user WHERE email = :email
+            SELECT * FROM tb_user_gs WHERE email = :email
             """)
     Optional<User> findByEmail(String email);
 

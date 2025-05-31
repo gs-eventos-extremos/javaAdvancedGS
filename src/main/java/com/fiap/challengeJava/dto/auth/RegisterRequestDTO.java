@@ -23,4 +23,14 @@ public class RegisterRequestDTO {
     public String password;
     @NotNull(message = "A função/papel é obrigatória")
     UserRole role;
+    @NotBlank(message = "Rua é obrigatória")
+    private String street;
+    @NotBlank(message = "Número é obrigatório")
+    private String num;
+    @NotBlank(message = "Cidade é obrigatória")
+    private String city;
+    @NotBlank(message = "Estado é obrigatório")
+    private String state;
+    @NotBlank(message = "CEP é obrigatório")
+    private String zipCode;
 }

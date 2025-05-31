@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa - OdontoPrev</title>
+    <link rel="stylesheet" href="css/mapa.css">
+    <script src="/js/scripts.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">
+            <img src="/images/logo.png" alt="OdontoPrev">
+        </div>
+
+        <div th:replace="~{fragments :: langSelector}"></div>
+
+        <p class="welcome-text" th:text="#{mapa.title-welcome}">Abaixo voce pode visualizar algum risco na sua regiao ou em outro local, basta pesquisar:</p>
+
+        <iframe width="70%" height="70%" frameborder="0" scrolling="no" allowfullscreen src="https://geoportal.sgb.gov.br/desastres/?find=Fiap%2C%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%2C%20BRA"></iframe>
+
+        <form action="#" th:action="@{/servicos}" method="post" class="back-form">
+            <button class="login-button" type="submit" th:text="#{service.button.back}">Voltar</button>
+        </form>
+    </div>
+
+</body>
+</html>

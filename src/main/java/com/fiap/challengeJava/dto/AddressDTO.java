@@ -32,4 +32,12 @@ public class AddressDTO {
         this.state = address.getState();
         this.zipCode = address.getZipCode();
     }
+
+    public AddressDTO(String street, String num, String city, String state, String zipCode) {
+        this.street = street;
+        this.num = num;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+    }
 }
